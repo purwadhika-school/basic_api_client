@@ -1,0 +1,3 @@
+rootProject.name = 'basic_api_client'
+
+include ':app'
