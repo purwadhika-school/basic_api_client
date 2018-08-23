@@ -45,6 +45,14 @@ class AddNotes extends Component {
           style={{ backgroundColor: "yellow", margin: 10 }}
         />
         <TouchableOpacity
+          onPress={() => this.props.handleBackToDefaultPage()}
+          style={{ width: "90%", backgroundColor: "blue" }}
+        >
+          <Text style={{ margin: 10, textAlign: "center", color: "white" }}>
+            Back
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
           onPress={() => this.handleAddNotes()}
           style={{ width: "90%", backgroundColor: "green" }}
         >

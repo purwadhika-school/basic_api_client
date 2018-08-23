@@ -10,7 +10,7 @@ class EditNotes extends Component {
       title: "",
       content: "",
       titleFromUser: "",
-      contentFromUser: ''
+      contentFromUser: ""
     };
   }
 
@@ -46,17 +46,33 @@ class EditNotes extends Component {
   };
 
   validateDataInputFromUser = () => {
-    const { titleFromUser, contentFromUser } = this.state
-    if (titleFromUser === "" || contentFromUser === ""){
-      Alert.alert('Warning!', 'Fields can not be empty!')
+    const { titleFromUser, contentFromUser } = this.state;
+    if (titleFromUser === "" || contentFromUser === "") {
+      Alert.alert("Warning!", "Fields can not be empty!");
     } else {
-      this.updateNotesfromUser()
+      this.updateNotesfromUser();
     }
-  }
+  };
 
   updateNotesfromUser = () => {
-
-  }
+    const { titleFromUser, contentFromUser } = this.state;
+    const id_notes = this.props.id;
+    const url = `http://172.104.50.9:3000/api/Notes/${id_notes}`; // template string
+    const dataYangMauDiUpdate = {
+      title: titleFromUser,
+      content: contentFromUser
+    };
+    axios
+      .put(url, dataYangMauDiUpdate)
+      .then(response => {
+        if (response.status === 200) {
+          this.props.handleBackToDefaultPage();
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   render() {
     return (
@@ -89,9 +105,10 @@ class EditNotes extends Component {
           >
             <Text>Back</Text>
           </TouchableOpacity>
-          <TouchableOpacity 
+          <TouchableOpacity
             onPress={() => this.validateDataInputFromUser()}
-            style={{ backgroundColor: "green", width: "40%" }}>
+            style={{ backgroundColor: "green", width: "40%" }}
+          >
             <Text>Submit</Text>
           </TouchableOpacity>
         </View>
@@ -104,5 +121,5 @@ export default EditNotes;
 
 // 1. Back button navigate to default page === ok
 // 2. data dari server dataroh di textinput === ok
-// 3. Submit -> request put to api server 
+// 3. Submit -> request put to api server
 // 4. One or many fields can not be empty

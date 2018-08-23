@@ -4,6 +4,7 @@ import {
   ActivityIndicator,
   Text,
   TouchableOpacity,
+  RefreshControl,
   View,
   FlatList
 } from "react-native";
@@ -18,7 +19,8 @@ export default class App extends Component {
     this.state = {
       dataNotes: [],
       pageNeedsTobeRender: "",
-      id_notes: 0
+      id_notes: 0,
+      refreshingStatus: false
     };
   }
 
@@ -31,7 +33,7 @@ export default class App extends Component {
     axios
       .get(url)
       .then(res => {
-        this.setState({ dataNotes: res.data });
+        this.setState({ dataNotes: res.data, refreshingStatus: false });
       })
       .catch(err => {
         console.log(err);
@@ -74,6 +76,11 @@ export default class App extends Component {
         <View style={{ flex: 1 }}>
           {this.state.dataNotes.length > 0 ? (
             <FlatList
+              refreshControl={
+                <RefreshControl
+                  refreshing={this.state.refreshingStatus} 
+                  onRefresh={() => this.getData()} />
+              }
               data={this.state.dataNotes}
               renderItem={this.renderItemList}
               keyExtractor={(item, id) => item.index}
